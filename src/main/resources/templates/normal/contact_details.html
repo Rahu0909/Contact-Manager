@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="normal/base::layout(~{::section})">
+<head>
+<meta charset="UTF-8" />
+<title>This is Home Page</title>
+</head>
+<body>
+	<section>
+		<div class="card mr-3 ml-3" th:if=${contact}>
+			<div class="card-body">
+				<div th:if="${session.message}"
+					th:classappend="${session.message.type}" class="alert" role="alert">
+					<p class="text-center" th:text="${session.message.content}"></p>
+					<th:block th:text="${#session.removeAttribute('message')}"></th:block>
+				</div>
+				<div class="container text-center">
+					<img style="height: 200px; width: 200px;"
+						class="my_profile_picture" th:src="@{'/img/'+${contact.image}}"
+						alt="profile.photo" />
+					<h3 class="mt-3">
+						<span th:text="${contact.name}"></span>( <span
+							th:text="${contact.secondName}"></span> )
+					</h3>
+					<div class=table-responsive>
+						<table class="table table-hover">
+							<thead>
+								<tr>
+									<th scope="col">Id</th>
+									<th scope="col">SCM2023<span th:text="${contact.cId}"></span></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<th scope="row">Email</th>
+									<td><span th:text="${contact.email}"></span></td>
+								</tr>
+								<tr>
+									<th scope="row">Phone</th>
+									<td><span th:text="${contact.phone}"></span></td>
+								</tr>
+								<tr>
+									<th scope="row">Work</th>
+									<td><span th:text="${contact.work}"></span></td>
+								</tr>
+							</tbody>
+						</table>
+					</div> 
+					<div class="description">
+						<th:block>
+							<h5>
+								<span th:utext="${contact.description}"></span>
+							</h5>
+						</th:block>
+					</div>
+					<div class="container mt-3 mr-3 ml-3 text-center">
+						<button th:onclick="|deleteContact(${contact.cId})|"
+							class="btn btn-danger btn-sm">Delete</button>
+						<form method="post"
+							th:action="@{'/user/update-contact/'+${contact.cId}}"
+							class="mt-2">
+							<button type="submit" class="btn btn-primary btn-sm">Update</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<h1 class="text-center p-3 bg-danger text-white mr-3 ml-3"
+			th:unless="${contact}">You are not authorized to see this
+			contact</h1>
+	</section>
+</body>
+</html>
